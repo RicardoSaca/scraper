@@ -7,14 +7,6 @@ import time
 import csv
 import parameters
 
-def open_output():
-    #specify file
-    writer = csv.writer(open(parameters.file_name, 'w'))
-
-    #write to file object
-    writer.writerow(['Name', 'Job Title','Company','College','Location', 'URL'])
-
-
 def linkedin():
     #Load page on driver and go to linkedin
     driver.get('https://www.linkedin.com/')
@@ -162,42 +154,51 @@ def print_url(name, job_title, company, college, location, linkedin_url):
         print('URL: ' + linkedin_url)
 
 def inputs(): #main program
-    number_links = int(input('Input number of search results wanted: '))
+    more = 'Y'
+    wanted = []
 
-    query = 'site:linkedin.com/in/ AND '
-    print('What is the query you are looking for?')
-    query += str(input('site:linkedin.com/in/ AND ? '))
+    while(more != 'N'):
+        #Ask for number of people wanted
+        number_links = int(input('Input number of search results wanted: '))
+        #Ask for position and location wanted
+        query = 'site:linkedin.com/in/ AND '
+        print('What is the query you are looking for? ')
+        query += str(input('site:linkedin.com/in/ AND ? '))
+        #Ask if searching for more positions
+        more = input('Searching for another position? (Y/N) ')
+        wanted.append([number_links, query])
 
-    return number_links, query
+    return wanted
 
 ##################
 ## Main program ##
 ##################
 
-#Define new variable passing two params
-file_object = open('results.csv', 'w', newline='')
-writer = csv.writer(file_object, delimiter=",", quotechar='"', quoting=csv.QUOTE_MINIMAL)
-
-#write to file object
-writer.writerow(['Name', 'Job Title','Company','College','Location', 'URL'])
+#ask for inputs
+wanted = inputs()
 
 #Create a new instance of Chrome
 driver = webdriver.Chrome(executable_path=parameters.path)
 
-#ask for inputs
-num_links, query = inputs()
+linkedin_urls = []
+for i in wanted:
+    #find ulrs of interest
+    linkedin_urls += get_google(i[0], i[1])
 
-#find ulrs of interest
-linkedin_urls = get_google(num_links, query)
+# open file
+with open('results.csv', 'w', newline='') as csvfile:
+    writer = csv.writer(csvfile, delimiter=' ', quotechar=',', quoting=csv.QUOTE_MINIMAL)
+    #write to file object
+    writer.writerow(['Name', 'Job Title','Company','College','Location', 'URL'])
 
-#parse urls and extract data
-results = parse_urls(linkedin_urls)
+    #parse urls and extract data
+    results = parse_urls(linkedin_urls)
 
 #terminate the application
 driver.quit()
 
-## adding console for chaning search_query
-## scrapping a certain number of users in google
+print("Scrapping Completed")
+
 
 
 #################################################
