@@ -198,3 +198,15 @@ driver.quit()
 
 ## adding console for chaning search_query
 ## scrapping a certain number of users in google
+
+
+#################################################
+# find ul item:
+#
+# resultSet = driver.find_element_by_xpath("//section[@id='abc']/ul")
+# options = resultSet.find_elements_by_tag_name("li")
+#
+# loop through li:
+#
+#for option in options:
+#    print(option.text)
