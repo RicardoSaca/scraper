@@ -6,7 +6,6 @@ from parsel import Selector
 import time
 import csv
 import parameters
-# import re
 # scrolling funcitonality
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
@@ -30,10 +29,6 @@ def linkedin():
     sign_in_button = driver.find_element_by_xpath('//*[@type="submit"]')
     sign_in_button.click()
     time.sleep(0.5)
-
-    # Add a phone number for security
-    # skip_button = driver.find_element_by_class_name("secondary-action")
-    # skip_button.click()
 
 def get_google(num_links=10, searchQuery=parameters.search_query):
 
@@ -121,6 +116,7 @@ def parse_urls(urls):
             driver.execute_script("window.scrollTo(0, document.body.scrollHeight*%s);" % scheight)
             scheight += .1
             time.sleep(0.5)
+        #get skills
         try:
             driver.execute_script("arguments[0].scrollIntoView(true);", WebDriverWait(driver, 10).until(EC.visibility_of_element_located((By.XPATH, "//button[@aria-controls='skill-categories-expanded' and @data-control-name='skill_details']/span[normalize-space()='Show more']"))))
             driver.execute_script("arguments[0].click();", WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.XPATH, "//button[@aria-controls='skill-categories-expanded' and @data-control-name='skill_details']/span[normalize-space()='Show more']"))))
@@ -129,14 +125,8 @@ def parse_urls(urls):
             skill_set = []
             for skill in skills:
                 skill_set.append(skill.text)
-
         except:
             skill_set = False
-            print('NO')
-
-        print(name, url, skill_set)
-
-        #get skills
 
         # get location
         location = sel.xpath("//span[@class='text-body-small inline t-black--light break-words']/text()").extract_first()
@@ -185,7 +175,7 @@ def print_url(name, job_title, company, college, education, location, skill_set,
         print(skill_set)
         print('URL: ' + linkedin_url)
 
-def inputs(): #main program
+def inputs():
     more = 'Y'
     wanted = []
 
@@ -208,7 +198,7 @@ def inputs(): #main program
     return wanted
 
 ##################
-## Main program ##
+#  Main program  #
 ##################
 
 #ask for inputs
