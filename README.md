@@ -27,3 +27,8 @@ The scrapper will then run and createa file called results.csv where the informa
 ### Disclamer
 Scrapping linkedin can lead to your profile being banned or suspnded. It is recommended to use an account that is not your main one. 
 It is [legal](https://www.forbes.com/sites/emmawoollacott/2019/09/10/linkedin-data-scraping-ruled-legal/#:~:text=A%20court%20has%20ruled%20that,that%20this%20violates%20user%20privacy.) but the company views it as [a violation of terms of service](https://news.linkedin.com/2021/april/an-update-from-linkedin)  
+
+### Tutorials used 
+https://www.linkedin.com/pulse/how-easy-scraping-data-from-linkedin-profiles-david-craven/
+https://stackoverflow.com/questions/62009351/linkedin-scraper-to-extract-skills
+
