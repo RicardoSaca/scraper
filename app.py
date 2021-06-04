@@ -6,6 +6,7 @@ from parsel import Selector
 import time
 import csv
 import parameters
+import re
 
 def linkedin():
     #Load page on driver and go to linkedin
@@ -75,7 +76,7 @@ def get_google(num_links=10, searchQuery=parameters.search_query):
 
     return linkedin_urls
 
-def parse_urls(urls):
+def parse_urls(urls, wanted):
     #Open and sign in to linkedin
     linkedin()
 
@@ -108,9 +109,18 @@ def parse_urls(urls):
 
         #get college
         college = sel.xpath("//div[@aria-label='Education']/text()").extract_first()
-
         if college:
             college = college.strip()
+
+        #get college different way
+        # not working ####################################################
+        #find ul item:
+        resultSet = sel.xpath("//*[@id='ember572']")
+        options = resultSet.find_elements_by_tag_name("li")
+        #loop through li:
+        for option in options:
+            print(option.text)
+
 
         # get location
         location = sel.xpath("//span[@class='text-body-small inline t-black--light break-words']/text()").extract_first()
@@ -132,7 +142,7 @@ def parse_urls(urls):
         # print_url(name, job_title, company, college, location, linkedin_url)
 
         #write to file output
-        writer.writerow([name.encode('utf-8'), job_title.encode('utf-8'), company.encode('utf-8'), college.encode('utf-8'), location.encode('utf-8'), linkedin_url.encode('utf-8')])
+        writer.writerow([name, job_title, company, college, location, linkedin_url])
 
 #ensure all key data fields hava a value
 def validate_field(field):# if field is present pass
@@ -164,8 +174,11 @@ def inputs(): #main program
         query = 'site:linkedin.com/in/ AND '
         print('What is the query you are looking for? ')
         query += str(input('site:linkedin.com/in/ AND ? '))
+        # position = re.search('\"(.*?)\"', query)
+        # if position:
+        #     position = position.group(0).strip('"')
         #Ask if searching for more positions
-        more = input('Searching for another position? (Y/N) ')
+        more = input('Searching for another position? (Y/N) ').upper()
         wanted.append([number_links, query])
 
     return wanted
@@ -186,28 +199,23 @@ for i in wanted:
     linkedin_urls += get_google(i[0], i[1])
 
 # open file
-with open('results.csv', 'w', newline='') as csvfile:
-    writer = csv.writer(csvfile, delimiter=' ', quotechar=',', quoting=csv.QUOTE_MINIMAL)
+with open('results.csv', 'w', encoding='utf-8', newline='') as csvfile:
+    writer = csv.writer(csvfile)
     #write to file object
-    writer.writerow(['Name', 'Job Title','Company','College','Location', 'URL'])
+    writer.writerow(['Name','Job Title','Company','College','Location','URL'])
 
     #parse urls and extract data
-    results = parse_urls(linkedin_urls)
+    results = parse_urls(linkedin_urls, wanted)
 
 #terminate the application
 driver.quit()
 
 print("Scrapping Completed")
 
-
-
 #################################################
-# find ul item:
+# TO - DO:
+# Univeristy improvement
+# Skills?
 #
-# resultSet = driver.find_element_by_xpath("//section[@id='abc']/ul")
-# options = resultSet.find_elements_by_tag_name("li")
 #
-# loop through li:
-#
-#for option in options:
-#    print(option.text)
+#################################################

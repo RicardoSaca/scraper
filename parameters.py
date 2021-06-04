@@ -9,5 +9,5 @@ file_name = 'results.csv'
 path = "C:/Users/rsacaher.ga/OneDrive - Providence College/Documents/chromedriver.exe"
 
 #login credentials
-linkedin_password = '@1Kh$JA%q$0AmQGnFKTIv9'
-linkedin_email = 'ilikeprov@gmail.com'
+linkedin_password = ''
+linkedin_email = ''
