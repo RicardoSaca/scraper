@@ -1,15 +1,15 @@
-# Linkedin Scrapper using Selenium 
-by: Ricardo Saca 
+# Linkedin Scrapper using Selenium
+by: Ricardo Saca
 
 ## What infromation it collects?
-* Name 
+* Name
 * Current Job Title
-* Current Company 
+* Current Company
 * Last College
 * Education section
-* Current Location 
-* Skill Set section 
-* Linkedin URL 
+* Current Location
+* Skill Set section
+* Linkedin URL
 
 ## How it works?
 ### Setup
@@ -22,13 +22,13 @@ The scrapper will then ask how many users you are looking for, give number with 
 Then it will ask what is the search query you want, use format "POSITION" AND "LOCATION" <br>
 Then it will ask if you want to search for another position return Y or N <br>
 Repeat until you have all the positions you are looking for <br>
-The scrapper will then run and createa file called results.csv where the information you are looking for will be found 
+The scrapper will then run and create a file called results.csv where the information you are looking for will be found
 
 ### Disclamer
-Scrapping linkedin can lead to your profile being banned or suspnded. It is recommended to use an account that is not your main one. 
-It is [legal](https://www.forbes.com/sites/emmawoollacott/2019/09/10/linkedin-data-scraping-ruled-legal/#:~:text=A%20court%20has%20ruled%20that,that%20this%20violates%20user%20privacy.) but the company views it as [a violation of terms of service](https://news.linkedin.com/2021/april/an-update-from-linkedin)  
+Scrapping linkedin can lead to your profile being banned or suspnded. It is recommended to use an account that is not your main one.
+It is [legal](https://www.forbes.com/sites/emmawoollacott/2019/09/10/linkedin-data-scraping-ruled-legal/#:~:text=A%20court%20has%20ruled%20that,that%20this%20violates%20user%20privacy.) but the company views it as [a violation of terms of service](https://news.linkedin.com/2021/april/an-update-from-linkedin)
 
-### Tutorials used 
+### Tutorials used
 https://www.linkedin.com/pulse/how-easy-scraping-data-from-linkedin-profiles-david-craven/
 https://stackoverflow.com/questions/62009351/linkedin-scraper-to-extract-skills
 
