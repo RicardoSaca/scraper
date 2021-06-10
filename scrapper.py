@@ -6,6 +6,7 @@ from parsel import Selector
 import time
 import csv
 import parameters
+import re
 # scrolling funcitonality
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
@@ -35,13 +36,14 @@ def get_google(num_links=10, searchQuery=parameters.search_query):
     num_pages = int(num_links / 10)
 
     #open google
+    time.sleep(1)
     driver.get('https://www.google.com/')
     time.sleep(2)
 
     #locate search bar and input query
     search_query = driver.find_element_by_name('q')
     search_query.send_keys(searchQuery)
-    time.sleep(0.5)
+    time.sleep(3)
 
     search_query.send_keys(Keys.RETURN)
     time.sleep(2)
@@ -52,23 +54,31 @@ def get_google(num_links=10, searchQuery=parameters.search_query):
         # locate and extract linkedin urls
         links = driver.find_elements_by_xpath("//div[@class='g']//div[@class='yuRUbf']/a['@href']")
         links = [url.get_attribute("href") for url in links]
+        time.sleep(2)
 
         # add links to url list
         linkedin_urls += links
-        time.sleep(0.5)
+        time.sleep(1)
 
         # go to next page
         next = driver.find_element_by_xpath("//span[contains(text(), 'Next')]")
         next.click()
+        time.sleep(2)
 
     return linkedin_urls
 
-def parse_urls(urls):
-    #Open and sign in to linkedin
-    linkedin()
+def parse_urls(urls, position):
 
+    #position = user input
+    position = position
+
+    count = 0
     #go through urls
     for url in urls:
+        #error checking
+        print(count)
+        count += 1
+
         #open url
         driver.get(url)
         time.sleep(4)
@@ -138,6 +148,7 @@ def parse_urls(urls):
 
         #validating if the fields exist on the profile
         name = validate_field(name)
+        position = validate_field(position)
         job_title = validate_field(job_title)
         company = validate_field(company)
         college =  validate_field(college)
@@ -150,7 +161,7 @@ def parse_urls(urls):
         # print_url(name, job_title, company, college, education,location, linkedin_url)
 
         #write to file output
-        writer.writerow([name, job_title, company, college, education, location, skill_set, linkedin_url])
+        writer.writerow([name, position, job_title, company, college, education, location, skill_set, linkedin_url])
 
 #ensure all key data fields hava a value
 def validate_field(field):# if field is present pass
@@ -161,10 +172,11 @@ def validate_field(field):# if field is present pass
         field = 'Null'
     return field
 
-def print_url(name, job_title, company, college, education, location, skill_set, linkedin_url):
+def print_url(name, position, job_title, company, college, education, location, skill_set, linkedin_url):
         # print to terminal
         print('\n')
         print('Name: ' + name)
+        print('Position: ' + position)
         print('Job Title: ' + job_title)
         print('Company ' + company)
         print('College: ' + college)
@@ -187,10 +199,6 @@ def inputs():
         print('What is the query you are looking for? ')
         query += str(input('site:linkedin.com/in/ AND ? ') or '"CEO" AND "United States"')
 
-        # position = re.search('\"(.*?)\"', query)
-        # if position:
-        #     position = position.group(0).strip('"')
-
         #Ask if searching for more positions
         more = input('Searching for another position? (Y/N) ').upper() or 'N'
         wanted.append([number_links, query])
@@ -204,22 +212,47 @@ def inputs():
 #ask for inputs
 wanted = inputs()
 
-#Create a new instance of Chrome
-driver = webdriver.Chrome(executable_path=parameters.path)
+#open Chrome
+#Set up options to prevent detection
+options = webdriver.ChromeOptions()
+options.add_argument('--disable-blink-features=AutomationControlled')
+options.add_experimental_option("excludeSwitches", ["enable-automation"])
+options.add_experimental_option('useAutomationExtension', False)
 
-linkedin_urls = []
-for i in wanted:
-    #find ulrs of interest
-    linkedin_urls += get_google(i[0], i[1])
+#Create a new instance of Chrome
+driver = webdriver.Chrome(options=options, executable_path=parameters.path)
+
+# set up user agent
+driver.execute_cdp_cmd('Network.setUserAgentOverride', {"userAgent": 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.53 Safari/537.36'})
+driver.execute_script("Object.defineProperty(navigator, 'webdriver', {get: () => undefined})")
+print(driver.execute_script("return navigator.userAgent;"))
+
+#Open and sign in to linkedin
+linkedin()
 
 # open file
 with open('results.csv', 'w', encoding='utf-8', newline='') as csvfile:
     writer = csv.writer(csvfile)
     #write to file object
-    writer.writerow(['Name','Job Title','Company','College','Education','Location','Skill Set','URL'])
+    writer.writerow(['Name','Position', 'Job Title','Company','College','Education','Location','Skill Set','URL'])
 
-    #parse urls and extract data
-    results = parse_urls(linkedin_urls)
+    linkedin_urls = []
+    for i in wanted:
+        print(i)
+        #find ulrs of interest
+        linkedin_urls = get_google(i[0], i[1])
 
-#terminate the application
+        #extract position from search query
+        position = re.search('\"(.*?)\"', i[1])
+        if position:
+            position = position.group(0).strip('"')
+
+        print('looking for ', i[0], ' got ', len(linkedin_urls))
+
+        #parse urls and extract data for position
+        parse_urls(linkedin_urls, position)
+
+        print('got', i[0],'results for', position)
+
+#close chrome
 driver.quit()
