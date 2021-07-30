@@ -1,4 +1,4 @@
-# Linkedin Scrapper using Selenium
+# Linkedin Scraper using Selenium
 by: Ricardo Saca
 
 ## What infromation it collects?
@@ -16,13 +16,13 @@ by: Ricardo Saca
 Clone the respository and install the required libraries to your virtual environment. <br>
 Edit the parameters.py with your linkedin email and password, as well as the local path to chromedriver ([more information](https://chromedriver.chromium.org/getting-started))
 
-### Running the Scrapper
-Run the scrapper on the command line by using: py scrapper.py <br>
-The scrapper will then ask how many users you are looking for, give number with a multiple of 10 <br>
+### Running the Scraper
+Run the scraper on the command line by using: py scraper.py <br>
+The scraper will then ask how many users you are looking for, give number with a multiple of 10 <br>
 Then it will ask what is the search query you want, use format "POSITION" AND "LOCATION" <br>
 Then it will ask if you want to search for another position return Y or N <br>
 Repeat until you have all the positions you are looking for <br>
-The scrapper will then run and create a file called results.csv where the information you are looking for will be found
+The scraper will then run and create a file called results.csv where the information you are looking for will be found
 
 ### Disclamer
 Scrapping linkedin can lead to your profile being banned or suspnded. It is recommended to use an account that is not your main one.
