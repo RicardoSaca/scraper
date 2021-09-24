@@ -26,7 +26,8 @@ The scraper will then run and create a file called results.csv where the informa
 
 ## Demo
 ![linkedin-scraper-demo](https://github.com/RicardoSaca/scraper/blob/main/demo.gif)
-The scrapping is seen at 2x the speed to lower the file size.
+
+The scrapping is seen at 2x the speed to lower the file size. Quality was compromised due to hositng issues. 
 
 ### Disclamer
 Scrapping linkedin can lead to your profile being banned or suspnded. It is recommended to use an account that is not your main one.
