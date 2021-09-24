@@ -25,7 +25,7 @@ Repeat until you have all the positions you are looking for <br>
 The scraper will then run and create a file called results.csv where the information you are looking for will be found
 
 ## Demo
-![linkedin-scraper-demo](https://github.com/RicardoSaca/scraper/edit/main/demo.gif)
+![linkedin-scraper-demo](https://github.com/RicardoSaca/scraper/blob/main/demo.gif)
 The scrapping is seen at 2x the speed to lower the file size.
 
 ### Disclamer
